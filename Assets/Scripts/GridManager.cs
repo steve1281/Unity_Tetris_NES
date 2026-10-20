@@ -12,26 +12,7 @@ namespace Tetris
         private void Start()
         {
             Color[] grid = new Color[220];
-
-            grid[216] = Palette.Cyan;
-            grid[219] = Palette.Blue;
-            grid[206] = Palette.Orange;
-            grid[209] = Palette.Yellow;
-            grid[196] = Palette.Green;
-            grid[199] = Palette.Purple;
-            grid[186] = Palette.Red;
-
             UpdateGrid(grid);
-
-            /*
-            AssignColor(21, 6, Palette.Magenta);
-            AssignColor(21, 9, Palette.Blue);
-            AssignColor(20, 6, Palette.Orange);
-            AssignColor(20, 9, Palette.Yellow);
-            AssignColor(19, 6, Palette.Green);
-            AssignColor(19, 9, Palette.Purple);
-            AssignColor(18, 6, Palette.Red);
-            */
         }
 
         private void AssignColor(int x, int y, Color c)
@@ -81,6 +62,16 @@ namespace Tetris
 
             //Array.Copy(newGrid, cells, length);
             updateAvailable = true;
+        }
+        public bool HasCollision(int pos)
+        {
+            if (pos < 0 || pos > cells.Length) return true;
+
+            if (cells[pos].GetComponent<SpriteRenderer>().color.a > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
