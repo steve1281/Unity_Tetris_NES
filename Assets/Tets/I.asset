@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60680012aebc854392cc4d7ab4e82bb, type: 3}
   m_Name: I
   m_EditorClassIdentifier: Assembly-CSharp::Tetris.Tetro
-  shape: f6fffffff7fffffff8fffffff9ffffffi
-  chosenColor: 0
+  shapes:
+  - shape: f6fffffff7fffffff8fffffff9ffffffi
+    chosenColor: 0
+  - shape: 02000000f8ffffffeeffffffe4ffffffi
+    chosenColor: 0

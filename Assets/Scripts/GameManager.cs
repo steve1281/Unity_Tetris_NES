@@ -27,24 +27,35 @@ namespace Tetris
         private IEnumerator Tests()
         {
             int offset = 0;
-            foreach (Tetro t in tets)
+            foreach (Tetro tet in tets)
             {
-                yield return StartCoroutine(Test(t, 210+offset));
-                offset += 2;
+                
+                yield return StartCoroutine(Test(tet, 210+offset));
+                //offset -= 2;
             }
         }
-        private IEnumerator Test(Tetro t, int position)
+        private IEnumerator Test(Tetro tet, int position)
         {
+            int currentRotation = 0;
+            TetroShape t = tet.shapes[currentRotation];
+
             float localWait = 0;
             while (position >0) 
             {
                 if (localWait > 0.5f)
                 {
                     EraseTet(t, position);
+                    // right rotation
+                    if (currentRotation > tet.shapes.Count-1 )
+                    {
+                        currentRotation = 0;
+                    }
+                    t = tet.shapes[currentRotation];
                     position = position - 10;
                     if (!TestRender(t.shape, position))
                     {
                         DrawTet(t, position);
+                        currentRotation++;
                     }
                     else
                     {
@@ -64,11 +75,11 @@ namespace Tetris
             }
             Debug.Log("Fini");
         }
-        private void EraseTet(Tetro t, int position)
+        private void EraseTet(TetroShape t, int position)
         {
             RenderTet(t.shape, Palette.White, position);
         }
-        private void DrawTet(Tetro t, int position)
+        private void DrawTet(TetroShape t, int position)
         {
             RenderTet(t.shape, t.ActiveColor, position);
         }
