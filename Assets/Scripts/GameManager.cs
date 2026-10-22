@@ -1,14 +1,17 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 namespace Tetris
 {
     public class GameManager : MonoBehaviour
     {
+        [SerializeField] private GridManager gridManager;
+        [SerializeField] private List<Tetro> tets = new List<Tetro>();
         private static GameManager instance;
         public static GameManager Instance { get => instance; private set => instance = value; }
-        
+
         private void Awake()
         {
             if (GameManager.Instance != null) return;
@@ -16,14 +19,34 @@ namespace Tetris
             DontDestroyOnLoad(gameObject);
         }
 
-        [SerializeField] private GridManager gridManager;
-
-        [SerializeField] private List<Tetro> tets = new List<Tetro>();
-
         private void Start()
         {
             StartCoroutine(Tests());
         }
+        void Update()
+        {
+            if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
+            {
+                Debug.Log("Move Right");
+            }
+            if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
+            {
+                Debug.Log("Move Left");
+            }
+            if (Keyboard.current.downArrowKey.wasPressedThisFrame)
+            {
+                Debug.Log("Soft Drop");
+            }
+            if (Keyboard.current.upArrowKey.wasPressedThisFrame)
+            {
+                Debug.Log("Rotate");
+            }
+            if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                Debug.Log("Hard Drop");
+            }
+        }
+
         private IEnumerator Tests()
         {
             int offset = 0;
@@ -31,13 +54,15 @@ namespace Tetris
             {
                 
                 yield return StartCoroutine(Test(tet, 210+offset));
-                //offset -= 2;
+                //offset += 1;
             }
         }
         private IEnumerator Test(Tetro tet, int position)
         {
             int currentRotation = 0;
-            TetroShape t = tet.shapes[currentRotation];
+            int pastRotation = 0;
+
+            TetroShape t = tet.shapes[currentRotation%tet.shapes.Count];
 
             float localWait = 0;
             while (position >0) 
@@ -55,17 +80,20 @@ namespace Tetris
                     if (!TestRender(t.shape, position))
                     {
                         DrawTet(t, position);
-                        currentRotation++;
+                        pastRotation = currentRotation;
+                        //currentRotation++;
                     }
                     else
-                    {
-                        position = position + 10;
-                        DrawTet(t, position);
+                    { 
+                        // collision occurred
+                        t = tet.shapes[pastRotation];
+                        position += 10;
+                        DrawTet(t, position); // + 10);
                         Debug.Log("Fini-via Collision");
                         yield break;
                     }
                     Physics2D.SyncTransforms();
-                    Debug.Log("In Situ");
+                    //Debug.Log("In Situ");
                     localWait = 0;
                 } else
                 {
@@ -86,7 +114,8 @@ namespace Tetris
         private bool TestRender(List<int> x, int position)
         {
             bool flag = false;
-            for (int j= x.Count -1;j>=0; j--)
+            //for (int j= x.Count -1;j>=0; j--)
+            for (int j = 0; j < x.Count; j++)
             {
                 int i = x[j];
                 if (gridManager.HasCollision(position + i))
