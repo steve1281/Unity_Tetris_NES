@@ -9,6 +9,7 @@ namespace Tetris
     {
         [SerializeField] private GridManager gridManager;
         [SerializeField] private List<Tetro> tets = new List<Tetro>();
+
         private static GameManager instance;
         public static GameManager Instance { get => instance; private set => instance = value; }
 
@@ -27,11 +28,13 @@ namespace Tetris
         {
             if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
             {
-                Debug.Log("Move Right");
+                //Debug.Log("Move Right");
+                positionAvailable = 1;
             }
             if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
             {
-                Debug.Log("Move Left");
+                //Debug.Log("Move Left");
+                positionAvailable = -1;
             }
             if (Keyboard.current.downArrowKey.wasPressedThisFrame)
             {
@@ -39,12 +42,31 @@ namespace Tetris
             }
             if (Keyboard.current.upArrowKey.wasPressedThisFrame)
             {
-                Debug.Log("Rotate");
+                //Debug.Log("Rotate");
+                rotateAvailable = true;
             }
             if (Keyboard.current.spaceKey.wasPressedThisFrame)
             {
                 Debug.Log("Hard Drop");
             }
+        }
+        private bool rotateAvailable = false;
+        private int positionAvailable = 0;
+
+        private int UpdatePosition(int position)
+        {
+            position += positionAvailable;
+            positionAvailable = 0;
+            return position;
+        }
+        private int UpdateRotation(int currentRotation)
+        {
+            if (rotateAvailable)
+            {
+                rotateAvailable = false;
+                currentRotation++;
+            }
+            return currentRotation;
         }
 
         private IEnumerator Tests()
@@ -52,15 +74,14 @@ namespace Tetris
             int offset = 0;
             foreach (Tetro tet in tets)
             {
-                
                 yield return StartCoroutine(Test(tet, 210+offset));
-                //offset += 1;
             }
         }
         private IEnumerator Test(Tetro tet, int position)
         {
             int currentRotation = 0;
             int pastRotation = 0;
+
 
             TetroShape t = tet.shapes[currentRotation%tet.shapes.Count];
 
@@ -70,25 +91,25 @@ namespace Tetris
                 if (localWait > 0.5f)
                 {
                     EraseTet(t, position);
-                    // right rotation
-                    if (currentRotation > tet.shapes.Count-1 )
+                    currentRotation = UpdateRotation(currentRotation) % tet.shapes.Count;
+                    position = UpdatePosition(position);
+                    if (currentRotation != pastRotation)
                     {
-                        currentRotation = 0;
+                        Debug.Log($" --- {currentRotation} --- ");
                     }
-                    t = tet.shapes[currentRotation];
+                    t = tet.shapes[currentRotation%tet.shapes.Count];
                     position = position - 10;
                     if (!TestRender(t.shape, position))
                     {
                         DrawTet(t, position);
                         pastRotation = currentRotation;
-                        //currentRotation++;
                     }
                     else
                     { 
                         // collision occurred
                         t = tet.shapes[pastRotation];
                         position += 10;
-                        DrawTet(t, position); // + 10);
+                        DrawTet(t, position); 
                         Debug.Log("Fini-via Collision");
                         yield break;
                     }
