@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: S
   m_EditorClassIdentifier: Assembly-CSharp::Tetris.Tetro
   shapes:
-  - shape: f7fffffff8ffffffecffffffedffffffi
+  - xshape:
+      rows: 00000000000101000101000000000000y
+    shape: f7fffffff8ffffffecffffffedffffffi
     chosenColor: 4
-  - shape: 01000000f7fffffff8ffffffeeffffffi
+  - xshape:
+      rows: 00010000000101000000010000000000y
+    shape: 01000000f7fffffff8ffffffeeffffffi
     chosenColor: 4
