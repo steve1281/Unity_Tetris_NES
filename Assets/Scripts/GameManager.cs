@@ -12,6 +12,8 @@ namespace Tetris
 
         private static GameManager instance;
         public static GameManager Instance { get => instance; private set => instance = value; }
+        private bool rotateAvailable = false;
+        private int positionAvailable = 0;
 
         private void Awake()
         {
@@ -22,6 +24,7 @@ namespace Tetris
 
         private void Start()
         {
+            InitializeTetros(tets);
             StartCoroutine(Tests());
         }
         void Update()
@@ -50,8 +53,39 @@ namespace Tetris
                 Debug.Log("Hard Drop");
             }
         }
-        private bool rotateAvailable = false;
-        private int positionAvailable = 0;
+
+        private void InitializeTetros(List<Tetro> tets)
+        {
+            int i = 0;
+            foreach(Tetro tet in tets)
+            {
+                
+                foreach(TetroShape shape in tet.shapes)
+                {
+                    i = 0;
+                    if (shape.xshape.GetValue(0,0)) shape.shape[i++] = 0;
+                    if (shape.xshape.GetValue(0,1)) shape.shape[i++] = 1;
+                    if (shape.xshape.GetValue(0,2)) shape.shape[i++] = 2;
+                    if (shape.xshape.GetValue(0,3)) shape.shape[i++] = 3;
+
+                    if (shape.xshape.GetValue(1,0)) shape.shape[i++] = -10;
+                    if (shape.xshape.GetValue(1,1)) shape.shape[i++] = -9;
+                    if (shape.xshape.GetValue(1,2)) shape.shape[i++] = -8;
+                    if (shape.xshape.GetValue(1,3)) shape.shape[i++] = -7;
+
+                    if (shape.xshape.GetValue(2,0)) shape.shape[i++] = -20;
+                    if (shape.xshape.GetValue(2,1)) shape.shape[i++] = -19;
+                    if (shape.xshape.GetValue(2,2)) shape.shape[i++] = -18;
+                    if (shape.xshape.GetValue(2,3)) shape.shape[i++] = -17;
+
+                    if (shape.xshape.GetValue(3,0)) shape.shape[i++] = -30;
+                    if (shape.xshape.GetValue(3,1)) shape.shape[i++] = -29;
+                    if (shape.xshape.GetValue(3,2)) shape.shape[i++] = -28;
+                    if (shape.xshape.GetValue(3,3)) shape.shape[i++] = -27;
+                }
+            }
+        }
+        
 
         private int UpdatePosition(int position)
         {
@@ -83,7 +117,7 @@ namespace Tetris
             int pastRotation = 0;
 
 
-            TetroShape t = tet.shapes[currentRotation%tet.shapes.Count];
+            TetroShape t = tet.shapes[0];// currentRotation%tet.shapes.Count];
 
             float localWait = 0;
             while (position >0) 
@@ -92,12 +126,13 @@ namespace Tetris
                 {
                     EraseTet(t, position);
                     currentRotation = UpdateRotation(currentRotation) % tet.shapes.Count;
+                    Debug.Log($"Current Rotation = {currentRotation}");
                     position = UpdatePosition(position);
                     if (currentRotation != pastRotation)
                     {
                         Debug.Log($" --- {currentRotation} --- ");
                     }
-                    t = tet.shapes[currentRotation%tet.shapes.Count];
+                    t = tet.shapes[currentRotation];
                     position = position - 10;
                     if (!TestRender(t.shape, position))
                     {

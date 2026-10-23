@@ -928,13 +928,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   gridManager: {fileID: 319060171}
   tets:
-  - {fileID: 11400000, guid: 289bc3ba554faae42b8967c1cfad67f3, type: 2}
-  - {fileID: 11400000, guid: 95d959377dc49804eb288c591963f063, type: 2}
-  - {fileID: 11400000, guid: 81f870b4d8e0d264cac82177f589c1c1, type: 2}
-  - {fileID: 11400000, guid: 3faf0dc559db0c548946da6b5e362986, type: 2}
-  - {fileID: 11400000, guid: dbb4e391d9882b844bd7658d40b9da66, type: 2}
   - {fileID: 11400000, guid: 22838247dab00dd4e8b1e1ad7300cfba, type: 2}
-  - {fileID: 11400000, guid: 32e426b7ee56b52419c1814c65e92a64, type: 2}
 --- !u!1 &390841306 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7883854535909901482, guid: 09fe072d02729fb4486a9394e40a58cd, type: 3}
