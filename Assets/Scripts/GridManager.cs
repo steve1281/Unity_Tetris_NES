@@ -7,7 +7,8 @@ namespace Tetris
     public class GridManager : MonoBehaviour
     {
         [SerializeField] private GameObject[] cells = new GameObject[220];
-        private bool updateAvailable;
+        int gridWidth = 10;
+        int gridHeight = 21;
 
         private void Start()
         {
@@ -60,8 +61,6 @@ namespace Tetris
                 cells[i].GetComponent<SpriteRenderer>().color = newGrid[i];
             }
 
-            //Array.Copy(newGrid, cells, length);
-            updateAvailable = true;
         }
         public bool HasCollision(int pos)
         {
@@ -72,6 +71,64 @@ namespace Tetris
                 return true;
             }
             return false;
+        }
+        public void ResolveLines()
+        {
+            bool flag = false;
+
+            Debug.Log("GridManager::ResolveLines called.");
+            for (int i=gridHeight; i > 0; i--)
+            {
+                for (int j = 0; j < gridWidth; j++)
+                {
+                    if (cells[i*gridWidth -1 -j].GetComponent<SpriteRenderer>().color.a == 0)
+                    {
+                        flag = false;
+                    } 
+                }
+                if (flag)
+                {
+                    Debug.Log($"Solid line detected at {i-1}");
+                    RemoveLineAt(i - 1);
+                }
+                flag = true;
+            }
+        }
+        private void RemoveLineAt(int index)
+        {
+            //Debug.Log($"GridManager::RemoveLineAt called with index = {index}");
+            for (int i = index+2; i< gridHeight;  i++)
+                CopyRow(i, i - 1);
+        }
+
+
+        private void CopyRow(int source, int target)
+        {
+            int sourceStartPos = source * gridWidth - 1;
+            int targetStartPos = target * gridWidth - 1;
+
+            //Debug.Log($"sourceStartPos={sourceStartPos} --> targetStartPos = {targetStartPos}");
+
+            GameObject sourceObject;
+            GameObject targetObject;
+            SpriteRenderer sourceSR;
+            SpriteRenderer targetSR;
+
+            for (int i =0; i<gridWidth; i++)
+            {
+                sourceObject = cells[sourceStartPos-i];
+                targetObject = cells[targetStartPos-i];
+
+                sourceSR = sourceObject.GetComponent<SpriteRenderer>();
+                targetSR = targetObject.GetComponent<SpriteRenderer>();
+
+                if (sourceSR != null && targetSR != null)
+                {
+                    targetSR.color = sourceSR.color;
+                }
+
+            }
+
         }
     }
 }

@@ -126,12 +126,8 @@ namespace Tetris
                 {
                     EraseTet(t, position);
                     currentRotation = UpdateRotation(currentRotation) % tet.shapes.Count;
-                    Debug.Log($"Current Rotation = {currentRotation}");
+                    //Debug.Log($"Current Rotation = {currentRotation}");
                     position = UpdatePosition(position);
-                    if (currentRotation != pastRotation)
-                    {
-                        Debug.Log($" --- {currentRotation} --- ");
-                    }
                     t = tet.shapes[currentRotation];
                     position = position - 10;
                     if (!TestRender(t.shape, position))
@@ -145,7 +141,8 @@ namespace Tetris
                         t = tet.shapes[pastRotation];
                         position += 10;
                         DrawTet(t, position); 
-                        Debug.Log("Fini-via Collision");
+                        Debug.Log("Fini-via Collision"); // <-- this will always be reached
+                        gridManager.ResolveLines();
                         yield break;
                     }
                     Physics2D.SyncTransforms();
@@ -157,7 +154,7 @@ namespace Tetris
                 }
                 yield return null;
             }
-            Debug.Log("Fini");
+            Debug.Log("Fini"); // <-- this should never be reached.
         }
         private void EraseTet(TetroShape t, int position)
         {
