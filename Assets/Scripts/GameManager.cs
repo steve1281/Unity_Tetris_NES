@@ -1,7 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace Tetris
 {
@@ -103,12 +104,26 @@ namespace Tetris
             return currentRotation;
         }
 
+        private List<int> CreateDropOrder()
+        {
+            List<int> temp = new List<int>() { 0, 1, 2, 3, 4, 5, 6 };
+            temp = temp.OrderBy(x => UnityEngine.Random.value).ToList();
+            return temp;
+        }
         private IEnumerator Tests()
         {
             int offset = 0;
-            foreach (Tetro tet in tets)
+            Tetro tet;
+            List<int> dropOrder = new List<int>();
+
+            while (true)
             {
-                yield return StartCoroutine(Test(tet, 210+offset));
+                dropOrder = CreateDropOrder();
+                foreach (int i in dropOrder)
+                {
+                    tet = tets[i];
+                    yield return StartCoroutine(Test(tet, 210 + offset));
+                }
             }
         }
         private IEnumerator Test(Tetro tet, int position)
