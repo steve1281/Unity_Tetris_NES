@@ -90,6 +90,7 @@ namespace Tetris
                 {
                     Debug.Log($"Solid line detected at {i-1}");
                     RemoveLineAt(i - 1);
+                    GameManager.Instance.UpdateScore(); // increase score
                 }
                 flag = true;
             }

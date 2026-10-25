@@ -16,6 +16,8 @@ namespace Tetris
         private bool rotateAvailable = false;
         private int positionAvailable = 0;
 
+        public int score = 0;
+
         private void Awake()
         {
             if (GameManager.Instance != null) return;
@@ -201,6 +203,11 @@ namespace Tetris
             { 
                 gridManager.UpdatePosition(position + i, c); 
             }
+        }
+
+        public void UpdateScore()
+        {
+            score++;  // for now just increase score
         }
     }
 
