@@ -16,6 +16,7 @@ namespace Tetris
 
         [SerializeField] int rowToDifficuly = 10;
         [SerializeField] float diffIncrease = 0.05f;
+        
 
         private static GameManager instance;
         public static GameManager Instance { get => instance; private set => instance = value; }
@@ -23,6 +24,7 @@ namespace Tetris
         private int positionAvailable = 0;
 
         public int score = 0;
+        private int nextDifficultyRow =0;
 
         private void Awake()
         {
@@ -33,6 +35,8 @@ namespace Tetris
 
         private void Start()
         {
+            nextDifficultyRow = rowToDifficuly;
+
             InitializeTetros(tets);
             StartCoroutine(Tests());
         }
@@ -40,10 +44,10 @@ namespace Tetris
         void Update()
         {
             ScoreText.text = score.ToString("0000");
-            if (score >= rowToDifficuly)
+            if (score >= nextDifficultyRow)
             {
                 speed = speed - diffIncrease;
-                rowToDifficuly = rowToDifficuly + rowToDifficuly;
+                nextDifficultyRow = rowToDifficuly + nextDifficultyRow;
             }
             
 
