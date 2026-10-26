@@ -12,6 +12,10 @@ namespace Tetris
         [SerializeField] private GridManager gridManager;
         [SerializeField] private List<Tetro> tets = new List<Tetro>();
         [SerializeField] private TextMeshProUGUI ScoreText;
+        [SerializeField] private float speed = 0.5f;
+
+        [SerializeField] int rowToDifficuly = 10;
+        [SerializeField] float diffIncrease = 0.05f;
 
         private static GameManager instance;
         public static GameManager Instance { get => instance; private set => instance = value; }
@@ -32,9 +36,16 @@ namespace Tetris
             InitializeTetros(tets);
             StartCoroutine(Tests());
         }
+
         void Update()
         {
             ScoreText.text = score.ToString("0000");
+            if (score >= rowToDifficuly)
+            {
+                speed = speed - diffIncrease;
+                rowToDifficuly = rowToDifficuly + rowToDifficuly;
+            }
+            
 
             if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
             {
@@ -143,7 +154,7 @@ namespace Tetris
             float localWait = 0;
             while (position >0) 
             {
-                if (localWait > 0.5f)
+                if (localWait > speed)
                 {
                     EraseTet(t, position);
                     currentRotation = UpdateRotation(currentRotation) % tet.shapes.Count;
