@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Linq;
 
 namespace Tetris
 {
@@ -10,6 +11,7 @@ namespace Tetris
     {
         [SerializeField] private GridManager gridManager;
         [SerializeField] private List<Tetro> tets = new List<Tetro>();
+        [SerializeField] private TextMeshProUGUI ScoreText;
 
         private static GameManager instance;
         public static GameManager Instance { get => instance; private set => instance = value; }
@@ -32,6 +34,8 @@ namespace Tetris
         }
         void Update()
         {
+            ScoreText.text = score.ToString("0000");
+
             if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
             {
                 //Debug.Log("Move Right");

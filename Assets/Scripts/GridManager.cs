@@ -88,7 +88,7 @@ namespace Tetris
                 }
                 if (flag)
                 {
-                    Debug.Log($"Solid line detected at {i-1}");
+                    //Debug.Log($"Solid line detected at {i-1}");
                     RemoveLineAt(i - 1);
                     GameManager.Instance.UpdateScore(); // increase score
                 }
