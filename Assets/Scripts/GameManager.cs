@@ -15,6 +15,7 @@ namespace Tetris
 
         [SerializeField] private List<Tetro> tets = new List<Tetro>();
         [SerializeField] private TextMeshProUGUI ScoreText;
+        [SerializeField] private GameObject endPanel;
         [SerializeField] private float speed = 0.5f;
 
         [SerializeField] int rowToDifficuly = 10;
@@ -54,6 +55,7 @@ namespace Tetris
 
         private IEnumerator NewGame()
         {
+            endPanel.SetActive(true);
             yield return new WaitForSeconds(5f);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
