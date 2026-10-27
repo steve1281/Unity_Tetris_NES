@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace Tetris
 {
@@ -28,6 +29,8 @@ namespace Tetris
         public int score = 0;
         private int nextDifficultyRow =0;
 
+        private bool gameOver = false;
+
         private void Awake()
         {
             if (GameManager.Instance != null) return;
@@ -38,9 +41,21 @@ namespace Tetris
         private void Start()
         {
             nextDifficultyRow = rowToDifficuly;
-
             InitializeTetros(tets);
             StartCoroutine(Tests());
+        }
+
+        private void GameOver()
+        {
+            Debug.Log("GameManager::GameOver called.");
+            StopAllCoroutines();
+            StartCoroutine(NewGame());
+        }
+
+        private IEnumerator NewGame()
+        {
+            yield return new WaitForSeconds(5f);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         void Update()
@@ -142,7 +157,7 @@ namespace Tetris
             for (int i=0; i<10000; i++)
                 dropOrder.AddRange( CreateDropOrder());
 
-            while (true)
+            while (true && !gameOver)
             {
                 for (int i = 0; i < 10000; i++)
                 {
@@ -150,7 +165,10 @@ namespace Tetris
                     nextTet = tets[dropOrder[i + 1]];
 
                     nextGrid.RenderTet(nextTet);
-                    yield return StartCoroutine(Test(tet, 210 + offset));
+                    if (!gameOver)
+                        yield return StartCoroutine(Test(tet, 210 + offset));
+                    else
+                        yield break;
                 }
             }
         }
@@ -163,7 +181,7 @@ namespace Tetris
             TetroShape t = tet.shapes[0];// currentRotation%tet.shapes.Count];
 
             float localWait = 0;
-            while (position >0) 
+            while (position >0 && !gameOver) 
             {
                 if (localWait > speed)
                 {
@@ -184,12 +202,17 @@ namespace Tetris
                         t = tet.shapes[pastRotation];
                         position += 10;
                         DrawTet(t, position); 
+                        if (position  ==210)
+                        {
+                            Debug.Log("---==== GAME OVER ====----");
+                            gameOver = true;
+                            GameOver();
+                        }
                         Debug.Log("Fini-via Collision"); // <-- this will always be reached
                         gridManager.ResolveLines();
                         yield break;
                     }
                     Physics2D.SyncTransforms();
-                    //Debug.Log("In Situ");
                     localWait = 0;
                 } else
                 {

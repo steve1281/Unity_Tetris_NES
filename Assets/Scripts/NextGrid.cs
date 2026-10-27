@@ -45,25 +45,6 @@ namespace Tetris
                     }
                 }
             }
-            /*
-            cells[0].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[1].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[2].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[3].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[4].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[5].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[6].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[7].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[8].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[9].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[10].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[11].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[12].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[13].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[14].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            cells[15].GetComponent<SpriteRenderer>().color = Palette.Blue;
-            Physics2D.SyncTransforms();
-            */
         }
     }
 }
