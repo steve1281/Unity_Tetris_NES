@@ -10,6 +10,8 @@ namespace Tetris
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private GridManager gridManager;
+        [SerializeField] private NextGrid nextGrid;
+
         [SerializeField] private List<Tetro> tets = new List<Tetro>();
         [SerializeField] private TextMeshProUGUI ScoreText;
         [SerializeField] private float speed = 0.5f;
@@ -135,14 +137,19 @@ namespace Tetris
         {
             int offset = 0;
             Tetro tet;
+            Tetro nextTet;
             List<int> dropOrder = new List<int>();
+            for (int i=0; i<10000; i++)
+                dropOrder.AddRange( CreateDropOrder());
 
             while (true)
             {
-                dropOrder = CreateDropOrder();
-                foreach (int i in dropOrder)
+                for (int i = 0; i < 10000; i++)
                 {
-                    tet = tets[i];
+                    tet = tets[dropOrder[i]];
+                    nextTet = tets[dropOrder[i + 1]];
+
+                    nextGrid.RenderTet(nextTet);
                     yield return StartCoroutine(Test(tet, 210 + offset));
                 }
             }
