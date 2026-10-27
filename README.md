@@ -64,7 +64,7 @@ PS C:\Users\steve\unity_projects\Unity_Tetris_NES>
 
 ## Some Design Notes
 - the original , borrowed from [link](https://upload.wikimedia.org/wikipedia/en/a/ae/Tetris_NES_play.png?utm_source=en.wikipedia.org&utm_campaign=imageinfo&utm_content=original)
-<img src="052-Tetris_NES_play.png" width="400">
+- <img src="052-Tetris_NES_play.png" width="400">
 - Not overly concerned with the visual
 - the visual play are is width: 10 times height: 20
 - also a few hidden
@@ -86,7 +86,7 @@ Inside that container, use three separate UI panels aligned with Horizontal Anch
 
 </pre>
 - Change the Camera to make the math easier
-<img src="052-Tetris_NES_unity_units.png" width="400">
+- <img src="052-Tetris_NES_unity_units.png" width="400">
 - H, Main Camera
     - Position: 0 0 -10
     - Rotation: 0 0 0
@@ -185,7 +185,7 @@ PS C:\Users\steve\unity_projects\Unity_Tetris_NES> git commit -m "Create a game 
 
 ## Drawing a tetrimino (tetriminoes)
 - there are a number of options, but we will use:
-<img src="052-Tetrominoes.png" width="400">
+- <img src="052-Tetrominoes.png" width="400">
 - they have names
 - I, J, L, O, S, T, Z
 - we will need to configure a scriptable object
@@ -200,8 +200,7 @@ PS C:\Users\steve\unity_projects\Unity_Tetris_NES> git commit -m "Create a game 
 
 #### Tetrimino Movements
 - every possible rotation
-<img src="052-Tetromino_Rotations_NES.png" width="400">
-
+- <img src="052-Tetromino_Rotations_NES.png" width="400">
 - I:
 <pre style="background-color: #505050; color: #ffffff; padding:15px; margin:5px">
   Horizontal (Spawn)             Vertical
